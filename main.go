@@ -1,3 +1,4 @@
+//usr/bin/env go run "$(readlink $0)" $@; exit
 package main
 
 import (
