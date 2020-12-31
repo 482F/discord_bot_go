@@ -1,0 +1,16 @@
+[
+    {
+        "BotName": "(BOTNAME)",
+        "GuildID": "(GUILDID)",
+        "Token": "(TOKEN)",
+        "IgnoreUsers": [
+            "(IGNOREUSERID1)",
+            "(IGNOREUSERID2)"
+        ],
+        "UserMap": {
+            "(USERID1)": "(USERNAME1)",
+            "(USERID2)": "(USERNAME2)",
+            "(USERID3)": "(USERNAME3)"
+        }
+    }
+]
