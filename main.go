@@ -12,7 +12,7 @@ import (
 )
 
 type Config struct {
-	BotName     string            `json:"BotName"`
+	BotID       string            `json:"BotID"`
 	GuildID     string            `json:"GuildID"`
 	Token       string            `json:"Token"`
 	IgnoreUsers []string          `json:"IgnoreUsers"`
@@ -52,12 +52,12 @@ func main() {
 
 //メッセージが投稿されたら
 func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
-	if mc.Author.ID == config.BotName {
+	if mc.Author.ID == config.BotID {
 		return
 	}
 	//fmt.Printf("%20s %20s %20s: %s\n", mc.ChannelID, time.Now().Format(time.Stamp), mc.Author.Username, mc.Content)
-	//fmt.Println(mc.Author.ID, config.BotName)
-	sendMessage(s, mc.ChannelID, config.BotName+mc.Content)
+	//fmt.Println(mc.Author.ID, config.BotID)
+	sendMessage(s, mc.ChannelID, config.BotID+mc.Content)
 	return
 }
 
