@@ -149,6 +149,9 @@ func onPresenceUpdate(s *discordgo.Session, pu *discordgo.PresenceUpdate) {
 }
 
 func sendMessage(s *discordgo.Session, channelID string, msg string) {
+	if msg == "" {
+		return
+	}
 	_, err := s.ChannelMessageSend(channelID, msg)
 
 	if err != nil {
