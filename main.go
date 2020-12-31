@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -35,7 +36,7 @@ func main() {
 	discord.Token = "Bot " + config.Token
 	checkErr(err)
 
-	discord.Identify.Intents = discordgo.MakeIntent(discordgo.IntentsGuildPresences)
+	discord.Identify.Intents = discordgo.MakeIntent(discordgo.IntentsGuildPresences | discordgo.IntentsGuildMessages)
 	discord.AddHandler(onMessageCreate)
 	discord.AddHandler(onPresenceUpdate)
 	err = discord.Open()
@@ -55,10 +56,48 @@ func onMessageCreate(s *discordgo.Session, mc *discordgo.MessageCreate) {
 	if mc.Author.ID == config.BotID {
 		return
 	}
-	//fmt.Printf("%20s %20s %20s: %s\n", mc.ChannelID, time.Now().Format(time.Stamp), mc.Author.Username, mc.Content)
-	//fmt.Println(mc.Author.ID, config.BotID)
-	sendMessage(s, mc.ChannelID, config.BotID+mc.Content)
+	var messages []string = strings.Split(mc.Content, " ")
+	if messages[0] != "<@!"+config.BotID+">" {
+		return
+	}
+	var commands []string = messages[1:]
+	var channel *discordgo.Channel
+	var channelName string
+	channel, err := s.Channel(mc.ChannelID)
+	checkErr(err)
+	channelName = channel.Name
+	switch channelName {
+	case "general":
+		generalCommand(s, channel, commands)
+	case "terraria":
+		terrariaCommand(s, channel, commands)
+	case "minecraft":
+		minecraftCommand(s, channel, commands)
+	case "test":
+		testCommand(s, channel, commands)
+	default:
+		sendMessage(s, channel.ID, fmt.Sprint(commands))
+	}
 	return
+}
+
+func generalCommand(s *discordgo.Session, channel *discordgo.Channel, commands []string) bool {
+	return true
+}
+
+func terrariaCommand(s *discordgo.Session, channel *discordgo.Channel, commands []string) bool {
+	return true
+}
+
+func minecraftCommand(s *discordgo.Session, channel *discordgo.Channel, commands []string) bool {
+	return true
+}
+
+func testCommand(s *discordgo.Session, channel *discordgo.Channel, commands []string) bool {
+	for _, command := range commands {
+		sendMessage(s, channel.ID, fmt.Sprint(command))
+	}
+	return true
 }
 
 //メンバーのステータスが変更されたら
